@@ -34,7 +34,7 @@
 #
 #                      Thank You!
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 import sys, warnings, ast, hashlib, getpass, atexit
 import aespython.key_expander, aespython.aes_cipher, aespython.cbc_mode
@@ -154,6 +154,15 @@ def decrypt_electrum_seed(wallet_file, get_password_fn):
                 warn("found invalid hex digit {!r} at position {} in decrypted seed; ignoring the rest".format(h, i))
                 hex_seed = hex_seed[:i]
                 break
+
+    # Count number of hex digits for informational purposes
+    if len(hex_seed) != len(seed):
+        hex_digit_count = 0
+        for h in seed:
+            if '0' <= h <= '9' or 'a' <= h <= 'f':
+                hex_digit_count += 1
+        warn('info: {} out of {} characters in decrypted seed are lowercase hex digits'
+             .format(hex_digit_count, len(seed)))
 
     if len(hex_seed) < 8:
         warn('length of valid hex-encoded digits is less than 8, giving up')
