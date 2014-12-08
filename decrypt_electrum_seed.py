@@ -34,9 +34,9 @@
 #
 #                      Thank You!
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
-import sys, warnings, ast, hashlib, getpass, atexit
+import sys, warnings, ast, hashlib, getpass, atexit, unicodedata
 import aespython.key_expander, aespython.aes_cipher, aespython.cbc_mode
 import mnemonic
 
@@ -118,6 +118,15 @@ def decrypt_electrum_seed(wallet_file, get_password_fn):
         password = get_password_fn()  # get a password via the callback
         if not password:
             return None, None
+        if unicodedata.normalize('NFC', password) != unicodedata.normalize('NFD', password):
+            if password == unicodedata.normalize('NFC', password):
+                the_default = 'NFC'
+            elif password == unicodedata.normalize('NFD', password):
+                the_default = 'NFD'
+            else:
+                the_default = 'a combination'
+            warn('password has different NFC and NFD encodings; only trying the default ({})'.format(the_default))
+        password = password.encode('UTF-8')
 
         # Derive the encryption key
         key = hashlib.sha256( hashlib.sha256( password ).digest() ).digest()
@@ -182,7 +191,14 @@ if __name__ == '__main__':
 
         wallet_file = open(sys.argv[1])
 
-        get_password = lambda: getpass.getpass('This wallet is encrypted, please enter its password:')
+        def get_password():
+            encoding = sys.stdin.encoding or ''
+            if 'utf' not in encoding.lower():
+                warn('terminal does not support UTF; passwords with non-ASCII chars might not work')
+            password = getpass.getpass('This wallet is encrypted, please enter its password:')
+            if isinstance(password, str) and encoding:
+                password = password.decode(encoding)  # convert from terminal's encoding to unicode
+            return password
 
     else:
 
