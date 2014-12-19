@@ -4,6 +4,12 @@
  * provides detailed error messages in the event of a failure
  * supported on Windows and Linux
 
+## Warning ##
+
+Working with an unencrypted seed is risky. If you are uncertain whether or not your computer is completely free of malware, you should not run this or any other program that can affect your finances (including Electrum).
+
+Electrum never stores an unencrypted seed to the hard drive. You are strongly advised to follow the same practice.
+
 ## Installation ##
 
 Just download the latest version from <https://github.com/gurnec/decrypt\_electrum\_seed/archive/master.zip> and unzip it to a location of your choice. There’s no installation procedure for the Python script itself, however there are additional requirements below depending on your operating system.
@@ -19,7 +25,7 @@ Just download the latest version from <https://github.com/gurnec/decrypt\_electr
 
 Before running decrypt\_electrum\_seed.py for the first time, you must enable the execute permission on the file (right click -> Properties, or use `chmod` at the command line).
 
-## How to Use
+## How to Use ##
 
 Simply double-click decrypt\_electrum\_seed.py and choose your wallet file in the file selection dialog. If you're given an option between running it in a terminal or without one, choose *Run in Terminal*.
 
