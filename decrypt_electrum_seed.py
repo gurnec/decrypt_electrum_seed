@@ -34,7 +34,7 @@
 #
 #                      Thank You!
 
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 import sys, warnings, ast, hashlib, getpass, atexit, unicodedata
 import aespython.key_expander, aespython.aes_cipher, aespython.cbc_mode
@@ -107,7 +107,7 @@ def decrypt_electrum_seed(wallet_file, get_password_fn):
         iv             = iv_and_encrypted_seed[:16]
         encrypted_seed = iv_and_encrypted_seed[16:]
         if len(encrypted_seed) < 16:
-            warn('length of encrypted seed, {}, is less than one AES block (16), giving up'.len(encrypted_seed))
+            warn('length of encrypted seed, {}, is less than one AES block (16), giving up'.format(len(encrypted_seed)))
             return None, None
         encrypted_seed_mod_blocksize = len(encrypted_seed) % 16
         if encrypted_seed_mod_blocksize != 0:
@@ -191,12 +191,12 @@ if __name__ == '__main__':
 
         wallet_file = open(sys.argv[1])
 
-        def get_password():
-            encoding = sys.stdin.encoding or ''
+        def get_password():  # must return unicode
+            encoding = sys.stdin.encoding or 'ASCII'
             if 'utf' not in encoding.lower():
                 warn('terminal does not support UTF; passwords with non-ASCII chars might not work')
-            password = getpass.getpass('This wallet is encrypted, please enter its password:')
-            if isinstance(password, str) and encoding:
+            password = getpass.getpass('This wallet is encrypted, please enter its password: ')
+            if isinstance(password, str):
                 password = password.decode(encoding)  # convert from terminal's encoding to unicode
             return password
 
@@ -212,7 +212,9 @@ if __name__ == '__main__':
         if not wallet_file:
             sys.exit('no wallet file selected')
 
-        get_password = lambda: tkSimpleDialog.askstring('Password', "This wallet is encrypted, please enter its password:", show='*')
+        def get_password():  # must return unicode
+            password = tkSimpleDialog.askstring('Password', "This wallet is encrypted, please enter its password:", show='*')
+            return password.decode('ASCII') if isinstance(password, str) else password
 
     seed_str, mnemonic_str = decrypt_electrum_seed(wallet_file, get_password)
 
