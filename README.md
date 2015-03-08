@@ -1,6 +1,6 @@
 # decrypt\_electrum\_seed.py #
 
- * a simple Python script which decrypts and displays the seed from an Electrum 1.x (or an Electrum-LTC) wallet file
+ * a simple Python script which decrypts and displays the seed from an Electrum (1.x, 2.x, or an Electrum-LTC) wallet file
  * provides detailed error messages in the event of a failure
  * supported on Windows and Linux
 
