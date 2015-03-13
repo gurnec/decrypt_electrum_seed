@@ -16,7 +16,7 @@ Just download the latest version from <https://github.com/gurnec/decrypt\_electr
 
 ### Windows ###
 
- * The latest version of Python 2.7, either the 32-bit version or the 64-bit version. Currently this is the “Python 2.7.8 Windows Installer” for the 32-bit version, or the “Python 2.7.8 Windows X86-64 Installer” for the 64-bit version (which is preferable if you have a 64-bit version of Windows), both available here: <https://www.python.org/download/>
+Visit the Python download page here: <https://www.python.org/downloads/windows/>, and click the link for the latest **Python 2** release. Download and run either the `Windows x86 MSI installer` for the 32-bit version of Python, or the `Windows x86-64 MSI installer` for the 64-bit one. If you're unsure which one is compatible with your PC, choose the 32-bit one.
 
 ### Linux ###
 
